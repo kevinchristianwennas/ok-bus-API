@@ -16,16 +16,16 @@ public class UserJDBCTemplate implements UserDAO {
 	}
 
 	@Override
-	public void create(String username, String password) {
-		String sql = "insert into user (username, password) values (?, ?)";
-		jdbcTemplateObject.update(sql, username, password);
+	public void create(String name, String email, String password, String phoneNumber) {
+		String sql = "insert into user (name, email, password, phoneNumber) values (?, ?, ?, ?)";
+		jdbcTemplateObject.update(sql, name, email, password, phoneNumber);
 		return;
 	}
 
 	@Override
-	public User getUser(String username) {
-		String sql = "select * from user where username = ?";
-		User user = jdbcTemplateObject.queryForObject(sql, new Object[]{username}, new UserMapper());
+	public User getUser(String email) {
+		String sql = "select * from user where email = ?";
+		User user = jdbcTemplateObject.queryForObject(sql, new Object[]{email}, new UserMapper());
 		return user;
 	}
 
@@ -37,16 +37,16 @@ public class UserJDBCTemplate implements UserDAO {
 	}
 
 	@Override
-	public void delete(String username) {
-		String sql = "delete from user where username = ?";
-		jdbcTemplateObject.update(sql, username);
+	public void delete(String email) {
+		String sql = "delete from user where email = ?";
+		jdbcTemplateObject.update(sql, email);
 		return;
 	}
 
 	@Override
-	public void update(String username, String password) {
-		String sql = "update user set password = ? where username = ?";
-		jdbcTemplateObject.update(sql, password, username);
+	public void update(String name, String email, String password, String phoneNumber) {
+		String sql = "update user set password = ?, phoneNumber = ?, name = ? where email = ?";
+		jdbcTemplateObject.update(sql, password, phoneNumber, name, email);
 		return;
 	}
 	
