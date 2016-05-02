@@ -10,10 +10,8 @@
 		<property name="password" value="" />
 	</bean>
 	
-	<bean id="userJDBCTemplate" class="com.ok.bus.UserJDBCTemplate">
+	<bean id="userJDBCTemplate" class="com.ok.bus.jdbctemplate.user.UserJDBCTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<bean id="applicationContextProvider" class="com.ok.bus.ApplicationContextProvider"></bean>
 
 </beans>
