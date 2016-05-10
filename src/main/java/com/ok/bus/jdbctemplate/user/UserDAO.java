@@ -13,7 +13,7 @@ public interface UserDAO {
 	
 	public List<User> listUser();
 	
-	public void delete(String email);
+	public void delete(long id);
 	
-	public void update(String name, String email, String password, String phoneNumber);
+	public void update(long id, String name, String email, String password, String phoneNumber);
 }

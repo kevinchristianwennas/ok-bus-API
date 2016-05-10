@@ -13,5 +13,11 @@
 	<bean id="userJDBCTemplate" class="com.ok.bus.jdbctemplate.user.UserJDBCTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-
+	<bean id="demandJDBCTemplate" class="com.ok.bus.jdbctemplate.demand.DemandJDBCTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="demandBusJDBCTemplate" class="com.ok.bus.jdbctemplate.demandbus.DemandBusJDBCTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
 </beans>

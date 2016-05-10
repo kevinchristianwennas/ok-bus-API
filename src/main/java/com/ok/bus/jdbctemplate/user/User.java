@@ -1,6 +1,7 @@
 package com.ok.bus.jdbctemplate.user;
 
 public class User {
+	private long id;
 	private String name;
 	private String email;
 	private String password;
@@ -28,5 +29,11 @@ public class User {
 	}
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
 	} 	
 }

@@ -37,16 +37,16 @@ public class UserJDBCTemplate implements UserDAO {
 	}
 
 	@Override
-	public void delete(String email) {
-		String sql = "delete from user where email = ?";
-		jdbcTemplateObject.update(sql, email);
+	public void delete(long id) {
+		String sql = "delete from user where id = ?";
+		jdbcTemplateObject.update(sql, id);
 		return;
 	}
 
 	@Override
-	public void update(String name, String email, String password, String phoneNumber) {
-		String sql = "update user set password = ?, phoneNumber = ?, name = ? where email = ?";
-		jdbcTemplateObject.update(sql, password, phoneNumber, name, email);
+	public void update(long id, String name, String email, String password, String phoneNumber) {
+		String sql = "update user set password = ?, phoneNumber = ?, name = ?, email = ? where id = ?";
+		jdbcTemplateObject.update(sql, password, phoneNumber, name, email, id);
 		return;
 	}
 	
