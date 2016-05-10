@@ -8,8 +8,8 @@ import javax.sql.DataSource;
 public interface DemandDAO {
 	public void setDataSource(DataSource ds);
 	
-	public void create(long userId, boolean rentType, String pickAddress, String destinationAddress,
-			Date departureDate, Date returnDate, int status);
+	public Demand create(long userId, boolean rentType, String pickAddress, String destinationAddress,
+			Date departureDate, Date returnDate, int status, String contact, String[] facilities);
 	
 	public Demand getDemand(long id);
 	
@@ -18,5 +18,6 @@ public interface DemandDAO {
 	public void delete(long id);
 	
 	public void update(long id, boolean rentType, String pickAddress, String destinationAddress,
-			Date departureDate, Date returnDate, int status, long choosenOfferId, long finalCost);
+			Date departureDate, Date returnDate, int status, String contact, String[] facilities, 
+			long choosenOfferId, long finalCost);
 }

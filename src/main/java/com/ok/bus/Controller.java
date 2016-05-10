@@ -1,6 +1,7 @@
 package com.ok.bus;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -28,6 +29,7 @@ public class Controller {
 	private DemandBusJDBCTemplate demandBusJDBCTemplate = (DemandBusJDBCTemplate) context.getBean("demandBusJDBCTemplate");
 	
 	//////////////////////////////////// THIS LINE BELLOW, API FOR USER ///////////////////////////////////////
+	
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public ResponseEntity<User> getUser(@RequestParam(value="email") String email) {
 		User user = userJDBCTemplate.getUser(email);
@@ -47,6 +49,7 @@ public class Controller {
 	}
 
 	//////////////////////////////////// THIS LINE BELLOW, API FOR DEMAND //////////////////////////////////////
+	
 	@RequestMapping(value = "/demand", method = RequestMethod.GET)
 	public ResponseEntity<List<Demand>> getDaftarPermintaan(@RequestParam(value="userId") int userId) {
 		List<Demand> listDemand = demandJDBCTemplate.listDemand(userId);
@@ -76,19 +79,52 @@ public class Controller {
 			@RequestParam(value="rentType") boolean rentType, @RequestParam(value="pickAddress") String pickAddress,
 			@RequestParam(value="destinationAddress") String destinationAddress, 
 			@RequestParam(value="departureDate") Date departureDate, @RequestParam(value="returnDate") Date returnDate,
-			@RequestParam(value="status") int status) {
-		demandJDBCTemplate.create(userId, rentType, pickAddress, destinationAddress, departureDate, returnDate, status);
+			@RequestParam(value="status") int status, @RequestParam(value="contact") String contact,
+			@RequestParam(value="facility") String[] facilities, @RequestParam(value="capacity") String[] capacity,
+			@RequestParam(value="amount") int[] amount, @RequestParam(value="budget") long[] budget) {
+		Demand newDemand = demandJDBCTemplate.create(userId, rentType, pickAddress, destinationAddress, departureDate, returnDate, status, contact, facilities);
+		for (int i = 0; i < capacity.length; i++) {
+			demandBusJDBCTemplate.create(newDemand.getId(), capacity[i], amount[i], budget[i]);
+		}
 		return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 	}
 	
 	@RequestMapping(value = "/demand", method = RequestMethod.PUT)
-	public ResponseEntity<String> updateDemand(@RequestParam(value="userId") int id, 
+	public ResponseEntity<String> updateDemand(@RequestParam(value="id") int id, 
 			@RequestParam(value="rentType") boolean rentType, @RequestParam(value="pickAddress") String pickAddress,
 			@RequestParam(value="destinationAddress") String destinationAddress, 
-			@RequestParam(value="departureDate") Date departureDate, @RequestParam(value="returnDate") Date returnDate,
-			@RequestParam(value="status") int status, @RequestParam(value="choosenOfferId") int choosenOfferId, 
-			@RequestParam(value="finalCost") int finalCost) {
-		demandJDBCTemplate.update(id, rentType, pickAddress, destinationAddress, departureDate, returnDate, status, choosenOfferId, finalCost);
+			@RequestParam(value="departureDate") Date departureDate, 
+			@RequestParam(value="returnDate") Date returnDate,
+			@RequestParam(value="status") int status, @RequestParam(value="contact") String contact,
+			@RequestParam(value="facility") String[] facilities, 
+			@RequestParam(value="choosenOfferId") int choosenOfferId, 
+			@RequestParam(value="finalCost") int finalCost, @RequestParam(value="capacity") String[] capacity,
+			@RequestParam(value="amount") int[] amount, @RequestParam(value="budget") long[] budget) {
+		demandJDBCTemplate.update(id, rentType, pickAddress, destinationAddress, departureDate, returnDate, status, contact, facilities, choosenOfferId, finalCost);
+		List<DemandBus> demandBuses = demandBusJDBCTemplate.listDemandBus(id);
+		ArrayList<Integer> newCapacityIndex = new ArrayList<>();
+		for (int i = 0; i < capacity.length; i++) {
+			newCapacityIndex.add(i);
+		}
+		for (DemandBus demandBus : demandBuses) {
+			boolean exist = false;
+			for (int i = 0; i < capacity.length; i++) {
+				if(demandBus.getCapacity().equals(capacity[i])) {
+					exist = true;
+					newCapacityIndex.remove(i);
+					demandBusJDBCTemplate.update(id, capacity[i], amount[i], budget[i]);
+				}
+			}
+			if (!exist) {
+				demandBusJDBCTemplate.delete(demandBus.getId());
+			}
+		}
+		if (newCapacityIndex.size() != 0){
+			for (int i : newCapacityIndex) {
+				demandBusJDBCTemplate.create(id, capacity[i], amount[i], budget[i]);
+			}
+		}
+		
 		return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 	}
 	

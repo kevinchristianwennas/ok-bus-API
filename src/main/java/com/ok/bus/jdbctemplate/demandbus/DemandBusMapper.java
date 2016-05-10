@@ -13,9 +13,8 @@ public class DemandBusMapper implements RowMapper<DemandBus>{
 		demandBus.setId(rs.getInt("id"));
 		demandBus.setDemandId(rs.getInt("demandId"));
 		demandBus.setAmount(rs.getInt("amount"));
-		demandBus.setBusType(rs.getString("busType"));
-		demandBus.setServices(rs.getString("services"));
-		demandBus.setUserBudget(rs.getLong("userBudget"));
+		demandBus.setCapacity(rs.getString("capacity"));
+		demandBus.setBudget(rs.getLong("budget"));
 		return demandBus;
 	}
 

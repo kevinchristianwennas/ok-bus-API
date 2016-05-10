@@ -3,10 +3,9 @@ package com.ok.bus.jdbctemplate.demandbus;
 public class DemandBus {
 	private int id;
 	private int demandId;
-	private String busType;
+	private String capacity;
 	private int amount;
-	private String services;
-	private long userBudget;
+	private long budget;
 	
 	public int getId() {
 		return id;
@@ -20,11 +19,11 @@ public class DemandBus {
 	public void setDemandId(int demandId) {
 		this.demandId = demandId;
 	}
-	public String getBusType() {
-		return busType;
+	public String getCapacity() {
+		return capacity;
 	}
-	public void setBusType(String busType) {
-		this.busType = busType;
+	public void setCapacity(String capacity) {
+		this.capacity = capacity;
 	}
 	public int getAmount() {
 		return amount;
@@ -32,16 +31,10 @@ public class DemandBus {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	public String getServices() {
-		return services;
+	public long getBudget() {
+		return budget;
 	}
-	public void setServices(String services) {
-		this.services = services;
-	}
-	public long getUserBudget() {
-		return userBudget;
-	}
-	public void setUserBudget(long userBudget) {
-		this.userBudget = userBudget;
+	public void setBudget(long budget) {
+		this.budget = budget;
 	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import com.ok.bus.jdbctemplate.demandbus.DemandBus;
 
 public class Demand {
-	private long id;
+	private int id;
 	private long userId;
 	private boolean rentType;
 	private String pickAddress;
@@ -17,12 +17,14 @@ public class Demand {
 	private long choosenOfferId;
 	private long finalCost;
 	private Date createdDate;
+	private String contact;
+	private List<String> facilities;
 	private List<DemandBus> listOfBus;
 	
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public long getUserId() {
@@ -90,5 +92,17 @@ public class Demand {
 	}
 	public void setListOfBus(List<DemandBus> listOfBus) {
 		this.listOfBus = listOfBus;
+	}
+	public String getContact() {
+		return contact;
+	}
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+	public List<String> getFacilities() {
+		return facilities;
+	}
+	public void setFacilities(List<String> facilities) {
+		this.facilities = facilities;
 	}
 }

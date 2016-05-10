@@ -18,11 +18,25 @@ public class DemandJDBCTemplate implements DemandDAO{
 	}
 
 	@Override
-	public void create(long userId, boolean rentType, String pickAddress, String destinationAddress, Date departureDate,
-			Date returnDate, int status) {
-		String sql = "insert into demand (userId, rentType, pickAddress, destinationAddress, departureDate, returnDate, status) values (?, ?, ?, ?, ?, ?, ?)";
-		jdbcTemplateObject.update(sql, userId, rentType, pickAddress, destinationAddress, departureDate, returnDate, status);
-		return;
+	public Demand create(long userId, boolean rentType, String pickAddress, String destinationAddress, Date departureDate,
+			Date returnDate, int status, String contact, String[] facilities) {
+		String sql = "insert into demand (userId, rentType, pickAddress, destinationAddress, departureDate, returnDate, status, contact, facilities) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String strFacilities = "";
+		for (String facility : facilities) {
+			strFacilities += facility+",";
+		}
+		
+		jdbcTemplateObject.update(sql, userId, rentType, pickAddress, destinationAddress, departureDate, returnDate, status, contact, strFacilities);
+		
+		Demand newCreatedDemand = getDemand(userId, rentType, pickAddress, destinationAddress, departureDate, returnDate, status, contact, strFacilities);
+		return newCreatedDemand;
+	}
+	
+	private Demand getDemand(long userId, boolean rentType, String pickAddress, String destinationAddress, Date departureDate,
+			Date returnDate, int status, String contact, String facilities) {
+		String sql = "select * from demand where userId = ? and rentType = ? and pickAddress like ? and destinationAddress like ? and departureDate = ? and returnDate = ? and status = ? and contact like ? and facilities like ?";
+		Demand demand = jdbcTemplateObject.queryForObject(sql, new Object[]{userId, rentType, pickAddress, destinationAddress, departureDate, returnDate, status, contact, facilities}, new DemandMapper());
+		return demand;
 	}
 
 	@Override
@@ -48,10 +62,14 @@ public class DemandJDBCTemplate implements DemandDAO{
 
 	@Override
 	public void update(long id, boolean rentType, String pickAddress, String destinationAddress, Date departureDate,
-			Date returnDate, int status, long choosenOfferId, long finalCost) {
-		String sql = "update demand set rentType = ?, pickAddress = ?, destinationAddress = ?, departureDate = ?, returnDate = ?, status = ?, choosenOfferId = ?, finalCost = ? where id = ?";
+			Date returnDate, int status, String contact, String[] facilities, long choosenOfferId, long finalCost) {
+		String sql = "update demand set rentType = ?, pickAddress = ?, destinationAddress = ?, departureDate = ?, returnDate = ?, status = ?, contact = ?, facilities = ?, choosenOfferId = ?, finalCost = ? where id = ?";
+		String strFacilities = "";
+		for (String facility : facilities) {
+			strFacilities += facility+",";
+		}
 		jdbcTemplateObject.update(sql, rentType, pickAddress, destinationAddress, departureDate, returnDate, status, 
-				choosenOfferId, finalCost, id);
+				contact, strFacilities, choosenOfferId, finalCost, id);
 		return;
 	}
 

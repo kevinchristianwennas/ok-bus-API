@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 public interface DemandBusDAO {
 	public void setDataSource(DataSource ds);
 	
-	public void create(int demandId, String busType, int amount, String services, long userBudget);
+	public void create(int demandId, String capacity, int amount, long budget);
 	
 	public DemandBus getDemandBus(long id);
 	
@@ -14,5 +14,5 @@ public interface DemandBusDAO {
 	
 	public void delete(long id);
 	
-	public void update(int id, String busType, int amount, String services, long userBudget);
+	public void update(int id, String capacity, int amount, long budget);
 }

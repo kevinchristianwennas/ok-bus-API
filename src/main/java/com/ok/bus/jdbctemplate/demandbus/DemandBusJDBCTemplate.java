@@ -20,9 +20,9 @@ public class DemandBusJDBCTemplate implements DemandBusDAO{
 	}
 
 	@Override
-	public void create(int demandId, String busType, int amount, String services, long userBudget) {
-		String sql = "insert into demandbus (demandId, busType, amount, services, userBudget) values (?, ?, ?, ?, ?)";
-		jdbcTemplateObject.update(sql, demandId, busType, amount, services, userBudget);
+	public void create(int demandId, String capacity, int amount, long budget) {
+		String sql = "insert into demandbus (demandId, capacity, amount, budget) values (?, ?, ?, ?)";
+		jdbcTemplateObject.update(sql, demandId, capacity, amount, budget);
 		return;
 	}
 
@@ -48,9 +48,9 @@ public class DemandBusJDBCTemplate implements DemandBusDAO{
 	}
 
 	@Override
-	public void update(int id, String busType, int amount, String services, long userBudget) {
-		String sql = "update demandbus set busType = ?, amount = ?, services = ?, userBudget = ? where id = ?";
-		jdbcTemplateObject.update(sql, busType, amount, services, userBudget, id);
+	public void update(int demandId, String capacity, int amount, long budget) {
+		String sql = "update demandbus set amount = ?, budget = ? where demandId = ? and capacity like ?";
+		jdbcTemplateObject.update(sql, amount, budget, demandId, capacity);
 		return;
 	}
 
