@@ -55,8 +55,8 @@ public class DemandJDBCTemplate implements DemandDAO{
 
 	@Override
 	public void delete(long id) {
-		String sql = "delete from demand where id = ?";
-		jdbcTemplateObject.update(sql, id);
+		String sql = "update demand set status = ? where id = ?";
+		jdbcTemplateObject.update(sql, 3,id);
 		return;
 	}
 

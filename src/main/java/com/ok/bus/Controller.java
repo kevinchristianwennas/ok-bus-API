@@ -32,7 +32,17 @@ public class Controller {
 	
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public ResponseEntity<User> getUser(@RequestParam(value="email") String email) {
-		User user = userJDBCTemplate.getUser(email);
+		User user = userJDBCTemplate.getUserByEmail(email);
+		if (user != null) {
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+	public ResponseEntity<User> getUser(@PathVariable int id) {
+		User user = userJDBCTemplate.getUserById(id);
 		if (user != null) {
 			return new ResponseEntity<User>(user, HttpStatus.OK);
 		} else {
@@ -131,10 +141,6 @@ public class Controller {
 	@RequestMapping(value = "/demand", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteDemand(@RequestParam(value="id") int id) {
 		Demand demand = demandJDBCTemplate.getDemand(id);
-		List<DemandBus> listOfBus = demandBusJDBCTemplate.listDemandBus(demand.getId());
-		for (DemandBus demandBus : listOfBus) {
-			demandBusJDBCTemplate.delete(demandBus.getId());
-		}
 		demandJDBCTemplate.delete(id);
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}

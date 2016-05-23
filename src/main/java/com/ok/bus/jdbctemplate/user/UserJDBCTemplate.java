@@ -23,9 +23,16 @@ public class UserJDBCTemplate implements UserDAO {
 	}
 
 	@Override
-	public User getUser(String email) {
+	public User getUserByEmail(String email) {
 		String sql = "select * from user where email = ?";
 		User user = jdbcTemplateObject.queryForObject(sql, new Object[]{email}, new UserMapper());
+		return user;
+	}
+	
+	@Override
+	public User getUserById(long id) {
+		String sql = "select * from user where id = ?";
+		User user = jdbcTemplateObject.queryForObject(sql, new Object[]{id}, new UserMapper());
 		return user;
 	}
 
